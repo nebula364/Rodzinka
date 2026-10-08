@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Multi-Stworki MP4 - Barcode AR</title>
+    
+    <!-- Sprawdzone biblioteki AR.js + A-Frame -->
+     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+          #video-0, #video-3, #video-5 { display: none; }
+             /* Ekran powitalny wymuszający kliknięcie (odblokowanie wideo na telefonach) */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100vw;height: 100vh;
+            background: black; color: white; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            font-family: sans-serif; font-size: large; text-align: center; cursor: pointer; }
+    </style>
+
+</head>
+  <!-- Ekran startowy: Kliknięcie tutaj odblokuje odtwarzanie filmów -->
+    <div id="splash">Dotknij ekranu, aby uruchomić AR</div>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+        
+        <a-assets>
+            <!-- Tutaj definiujemy 3 różne pliki wideo dla każdego stworka -->
+            <video id="video-0" src="stworek0.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
+            <video id="video-3" src="stworek3.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
+            <video id="video-5" src="stworek5.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
+        </a-assets>
+
+        <!-- MARKER 0 -->
+        <a-marker type="barcode" value="0" id="marker-0">
+            <a-video src="#video-0" width="2" height="3.5" rotation="-90 0 0" position="0 0 1"></a-video>
+        </a-marker>
+
+        <!-- MARKER 3 -->
+        <a-marker type="barcode" value="3" id="marker-3">
+            <a-video src="#video-3" width="2" height="3.5" rotation="-90 0 0" position="0 0 1"></a-video>
+        </a-marker>
+
+        <!-- MARKER 5 -->
+        <a-marker type="barcode" value="5" id="marker-5">
+            <a-video src="#video-5" width="2" height="3.5" rotation="-90 0 0" position="0 0 1"></a-video>
+        </a-marker>
+
+        
+
+    </a-scene>
+
+        <script>
+        // Obsługa ekranu startowego (bez użycia słowa const)
+        document.querySelector('#splash').addEventListener('click', function() {
+            document.querySelector('#splash').style.display = 'none';
+            document.querySelector('#video-0').play(); document.querySelector('#video-0').pause();
+            document.querySelector('#video-3').play(); document.querySelector('#video-3').pause();
+            document.querySelector('#video-5').play(); document.querySelector('#video-5').pause();
+        });
+
+        // Obsługa MARKERA 0
+        document.querySelector('#marker-0').addEventListener('markerFound', function() {
+            document.querySelector('#video-0').muted = false;
+            document.querySelector('#video-0').play();
+        });
+        document.querySelector('#marker-0').addEventListener('markerLost', function() {
+            document.querySelector('#video-0').pause();
+        });
+
+        // Obsługa MARKERA 3
+        document.querySelector('#marker-3').addEventListener('markerFound', function() {
+            document.querySelector('#video-3').muted = false;
+            document.querySelector('#video-3').play();
+        });
+        document.querySelector('#marker-3').addEventListener('markerLost', function() {
+            document.querySelector('#video-3').pause();
+        });
+
+        // Obsługa MARKERA 5
+        document.querySelector('#marker-5').addEventListener('markerFound', function() {
+            document.querySelector('#video-5').muted = false;
+            document.querySelector('#video-5').play();
+        });
+        document.querySelector('#marker-5').addEventListener('markerLost', function() {
+            document.querySelector('#video-5').pause();
+        });
+    </script>
+
+
+
+</body>
+</html>
